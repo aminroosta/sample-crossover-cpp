@@ -1,1 +1,42 @@
-1234
+{
+  "users": [
+    {
+      "name": "jack",
+      "password": "jack-password",
+      "blance": 1000,
+      "currency": "USD",
+      "cards": [
+        {
+          "id": "1234",
+          "pin": "1234"
+        }
+      ],
+      "transactions": [
+        {
+          "type": "wthdraw",
+          "amount": 10,
+          "date": "2016-06-28"
+        }
+      ]
+    },
+    {
+      "name": "bob",
+      "password": "bob-password",
+      "blance": 2100,
+      "currency": "EUR",
+      "cards": [
+        {
+          "id": "1234",
+          "pin": "1234"
+        }
+      ],
+      "transactions": [
+        {
+          "type": "wthdraw",
+          "amount": 12,
+          "date": "2016-06-29"
+        }
+      ]
+    }
+  ]
+}

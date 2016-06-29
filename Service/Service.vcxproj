@@ -143,11 +143,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="app.cc" />
+    <ClCompile Include="users.cc" />
     <ClCompile Include="utils.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="app.h" />
-    <ClInclude Include="utils.hpp" />
+    <ClInclude Include="users.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config.json" />

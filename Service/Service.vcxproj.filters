@@ -17,12 +17,15 @@
     <ClCompile Include="utils.cc">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="users.cc">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="app.h">
+    <ClInclude Include="utils.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="utils.hpp">
+    <ClInclude Include="users.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
