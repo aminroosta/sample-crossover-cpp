@@ -1,7 +1,5 @@
-#include <cpprest/http_client.h>
-#include <memory>
-#include "app.h"
 #include "utils.hpp"
+#include <memory>
 
 using namespace utility;                    // Common utilities like string conversions
 using namespace web;                        // Common features like URIs.
@@ -10,9 +8,9 @@ using namespace web::http::client;          // HTTP client features
 using app::utils;
 
 
-void app_main() {
+int main() {
 
-	auto readTask = utils::read_file<std::string>(U("config.json")).then([](std::string content) {
+	auto readTask = utils::read_file(U("config.json")).then([](std::string content) {
 		std::cout << content << std::endl;
 	});
 
@@ -32,8 +30,5 @@ void app_main() {
 	catch (const std::exception& e) {
 		printf("Error: %s\n", e.what());
 	}
-}
-
-
-/* calls app_main() if we are not running the unit tests*/
-APP_MAIN()
+	return 0;
+} 

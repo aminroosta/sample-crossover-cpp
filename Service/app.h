@@ -2,9 +2,7 @@
 
 /* Uncomment if you want to run the unit tests */
 
-#define RUN_TESTS
-
-void app_main();
+//#define RUN_TESTS
 
 #ifndef RUN_TESTS
 	#define APP_MAIN() int \
