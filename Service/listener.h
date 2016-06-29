@@ -22,11 +22,13 @@ namespace app {
 
 		listener(web::uri address);
 		pplx::task<void> open();
+		pplx::task<void> close();
 		
+		/* order of registerations matters, routes are matched partially so register general routes at the end */
 		void register_route(utility::string_t route, callback_t callback);
 
 	private:
-		std::map<utility::string_t, callback_t> _routes;
+		std::vector<std::pair<utility::string_t, callback_t>> _routes;
 		web::http::experimental::listener::http_listener _listener;
 		pplx::task<void> dispatch(web::http::http_request req);
 	};

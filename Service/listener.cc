@@ -18,8 +18,12 @@ pplx::task<void> app::listener::open() {
 	return _listener.open();
 }
 
+pplx::task<void> app::listener::close() {
+	return _listener.close();
+}
+
 void app::listener::register_route(string_t route, callback_t callback) {
-	_routes.emplace(move(route), move(callback));
+	_routes.emplace_back(move(route), move(callback));
 }
 
 pplx::task<void> app::listener::dispatch(web::http::http_request req) {

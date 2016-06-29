@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="listener.tests.cc" />
     <ClCompile Include="repository.tests.cc" />
     <ClCompile Include="serializeable.tests.cc" />
     <ClCompile Include="users.tests.cc" />
