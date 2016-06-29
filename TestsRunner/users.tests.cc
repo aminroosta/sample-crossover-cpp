@@ -19,4 +19,4 @@ TEST_CASE("Can create dummy users", "[users]") {
 				ok = false;
 		REQUIRE(ok);
 	}
-}
+} 
