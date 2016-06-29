@@ -1,4 +1,6 @@
 #include "../Service/utils.h"
+#include "../Service/listener.h"
+#include <cpprest/http_listener.h>
 #include <cpprest/json.h>
 #include <memory>
 
@@ -8,25 +10,26 @@ using namespace web::http;                  // Common HTTP functionality
 using namespace web::http::client;          // HTTP client features
 using app::utils;
 using std::cout;
+using std::wcout;
 using std::endl;
+
+
 
 
 int main() {
 
-	pplx::task<void> tsk([]() {
-		cout << "hey you!" << endl;
+	auto address = uri(U("http://127.0.0.1:3000"));
+	app::listener listener(address);
+
+	listener.register_route(U("/"), [](json::value params, json::value body) {
+		wcout << params << endl << body << endl;
+		return json::value(U("OK!"));
 	});
 
-	auto tsk2 = tsk.then([]() {
-		cout << "tsk2" << endl;
-	});
+	listener.open().wait();
+	wcout << U("Server is running at ") << address.to_string() << endl;
 
-	auto tsk3 = tsk.then([]() {
-		cout << "tsk3" << endl;
-	});
-
-	tsk2.wait();
-	tsk3.wait();
+	char ch; std::cin >> ch;
 
 	//http_client client(U("http://bing.com"));
 	//uri_builder builder(U("/search"));

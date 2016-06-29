@@ -20,6 +20,9 @@
     <ClCompile Include="repository.cc">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="listener.cc">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">
@@ -34,9 +37,11 @@
     <ClInclude Include="repository.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="listener.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="config.json" />
     <None Include="packages.config" />
   </ItemGroup>
 </Project>
