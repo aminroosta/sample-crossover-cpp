@@ -23,6 +23,6 @@ TEST_CASE("Can read an write into files", "[utils]") {
 
 	SECTION("Wrting from a file") {
 		auto readTask = utils::read_file(U("write-task-test.txt"));
-		REQUIRE(readTask.get() == "12345");
+		REQUIRE(readTask.get() == U("12345"));
 	}
 }

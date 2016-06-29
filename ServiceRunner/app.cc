@@ -13,6 +13,21 @@ using std::endl;
 
 int main() {
 
+	pplx::task<void> tsk([]() {
+		cout << "hey you!" << endl;
+	});
+
+	auto tsk2 = tsk.then([]() {
+		cout << "tsk2" << endl;
+	});
+
+	auto tsk3 = tsk.then([]() {
+		cout << "tsk3" << endl;
+	});
+
+	tsk2.wait();
+	tsk3.wait();
+
 	//http_client client(U("http://bing.com"));
 	//uri_builder builder(U("/search"));
 	//builder.append_query(U("q"), U("cpprestsdk github"));

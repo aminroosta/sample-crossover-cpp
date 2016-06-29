@@ -7,16 +7,10 @@ namespace app {
 	using std::make_shared;
 	using std::move;
 
-	concurrency::task<std::string> utils::read_file(const string_t filename)
+	concurrency::task<utility::string_t> utils::read_file(const string_t filename)
 	{
-		typedef container_buffer<std::string> string_buffer;
-		auto all_lines = std::make_shared<string_buffer>();
-
-		return fstream::open_istream(filename)
-			.then([=](concurrency::streams::istream file) {
-			return file.read_to_end(*all_lines);
-		}).then([=](size_t) {
-			return std::move(all_lines->collection());
+		return fstream::open_istream(filename).then([=](concurrency::streams::istream file) {
+			return file.extract<utility::string_t>();
 		});
 	}
 

@@ -142,10 +142,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="repository.cc" />
     <ClCompile Include="users.cc" />
     <ClCompile Include="utils.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="repository.h" />
     <ClInclude Include="serializeable.h" />
     <ClInclude Include="users.h" />
     <ClInclude Include="utils.h" />

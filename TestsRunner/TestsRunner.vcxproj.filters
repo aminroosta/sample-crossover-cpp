@@ -24,6 +24,9 @@
     <ClCompile Include="serializeable.tests.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="repository.tests.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

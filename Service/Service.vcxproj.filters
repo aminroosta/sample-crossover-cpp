@@ -17,6 +17,9 @@
     <ClCompile Include="users.cc">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="repository.cc">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">
@@ -26,6 +29,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="serializeable.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="repository.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
