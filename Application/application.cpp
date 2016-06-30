@@ -1,5 +1,6 @@
 #include <afxwin.h>      //MFC core and standard components
 #include "resource.h"    //main symbols
+#include <opencv2/opencv.hpp>
 
 //Globals
 //CEdit * TEST;
@@ -16,6 +17,14 @@ protected:
 	virtual BOOL OnInitDialog()
 	{
 		CDialog::OnInitDialog();
+
+		cv::VideoCapture cap(0);
+		if (cap.isOpened()) {
+			cv::Mat frame;
+			cap >> frame;
+			cv::imwrite("frame.jpg", frame);
+			cap.release();
+		}
 		//TEST = (CEdit *)GetDlgItem(IDC_TEST);
 		//TEST->SetWindowText(L"Hello!");
 		return true;
