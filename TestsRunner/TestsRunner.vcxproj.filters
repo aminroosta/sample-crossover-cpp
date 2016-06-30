@@ -30,6 +30,9 @@
     <ClCompile Include="listener.tests.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="authorize.tests.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

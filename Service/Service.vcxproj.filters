@@ -23,6 +23,9 @@
     <ClCompile Include="listener.cc">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="authorize.cc">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">
@@ -38,6 +41,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="listener.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="authorize.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

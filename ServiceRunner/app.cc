@@ -3,6 +3,7 @@
 #include <cpprest/http_listener.h>
 #include <cpprest/json.h>
 #include <memory>
+#include <objbase.h>
 
 using namespace utility;                    // Common utilities like string conversions
 using namespace web;                        // Common features like URIs.
@@ -16,20 +17,29 @@ using std::endl;
 
 
 
+
 int main() {
 
-	auto address = uri(U("http://127.0.0.1:3000"));
-	app::listener listener(address);
+	GUID guid;
+	CoCreateGuid(&guid);
 
-	listener.register_route(U("/"), [](json::value params, json::value body) {
-		wcout << params << endl << body << endl;
-		return json::value(U("OK!"));
-	});
+	printf("%08lX-%04hX-%04hX-%02hhX%02hhX-%02hhX%02hhX%02hhX%02hhX%02hhX%02hhX",
+		guid.Data1, guid.Data2, guid.Data3,
+		guid.Data4[0], guid.Data4[1], guid.Data4[2], guid.Data4[3],
+		guid.Data4[4], guid.Data4[5], guid.Data4[6], guid.Data4[7]);
 
-	listener.open().wait();
-	wcout << U("Server is running at ") << address.to_string() << endl;
+	//auto address = uri(U("http://127.0.0.1:3000"));
+	//app::listener listener(address);
 
-	char ch; std::cin >> ch;
+	//listener.register_route(U("/"), [](json::value params, json::value body) {
+	//	wcout << params << endl << body << endl;
+	//	return json::value(U("OK!"));
+	//});
+
+	//listener.open().wait();
+	//wcout << U("Server is running at ") << address.to_string() << endl;
+
+	//char ch; std::cin >> ch;
 
 	//http_client client(U("http://bing.com"));
 	//uri_builder builder(U("/search"));
