@@ -1,6 +1,7 @@
 #include <afxwin.h>      //MFC core and standard components
 #include "resource.h"    //main symbols
 #include <opencv2/opencv.hpp>
+#include <vector>
 
 //Globals
 //CEdit * TEST;
@@ -18,12 +19,17 @@ protected:
 	{
 		CDialog::OnInitDialog();
 
-		cv::VideoCapture cap(0);
-		if (cap.isOpened()) {
-			cv::Mat frame;
-			cap >> frame;
-			cv::imwrite("frame.jpg", frame);
-			cap.release();
+		try {
+			cv::VideoCapture cap(0);
+			if (cap.isOpened()) {
+				cv::Mat frame;
+				cap >> frame;
+				cv::imwrite("myimg.jpg", frame);
+				cap.release();
+			}
+		}
+		catch (std::exception& e) {
+			auto msg = e.what();
 		}
 		//TEST = (CEdit *)GetDlgItem(IDC_TEST);
 		//TEST->SetWindowText(L"Hello!");
