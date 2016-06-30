@@ -70,3 +70,5 @@ orleans.codegen.cs
 Debug/
 Release/
 x64/
+
+Client/*.jpg
