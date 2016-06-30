@@ -33,6 +33,9 @@
     <ClCompile Include="authorize.tests.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="app_routes.tests.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

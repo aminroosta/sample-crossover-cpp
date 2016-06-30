@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="app_routes.cc" />
     <ClCompile Include="authorize.cc" />
     <ClCompile Include="listener.cc" />
     <ClCompile Include="repository.cc" />
@@ -152,6 +153,7 @@
     <ClInclude Include="authorize.h" />
     <ClInclude Include="listener.h" />
     <ClInclude Include="repository.h" />
+    <ClInclude Include="app_routes.h" />
     <ClInclude Include="serializeable.h" />
     <ClInclude Include="users.h" />
     <ClInclude Include="utils.h" />

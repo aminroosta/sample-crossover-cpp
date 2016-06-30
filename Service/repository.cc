@@ -34,6 +34,12 @@ task<std::vector<user>> app::repository::get_users() {
 	return cached_task;
 }
 
+pplx::task<void> app::repository::set_users(std::vector<user> users) {
+	auto users_json = serializeable<vector<user>>::serialize(users);
+	return utils::write_file(users_json.to_string(), this->json_filename)
+		.then([this]() { this->invalidated = true; });
+}
+
 task<void> app::repository::write_dummy_users() {
 	/* create dummy users */
 	auto users = user::create_initial_users();

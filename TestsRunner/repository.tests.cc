@@ -17,12 +17,11 @@ TEST_CASE("Repository is working as expected", "[repository]") {
 		REQUIRE_NOTHROW( repository::instance(true) );
 	}
 
-	auto users = user::create_initial_users();
 	SECTION("Can get the list of users") {
-		repository& repo = repository::instance();
+		repository& repo = repository::instance(true);
 		auto repo_users = repo.get_users().get();
 		REQUIRE((
-			users == repo_users
+			!repo_users.empty()
 		));
 	}
 }

@@ -11,6 +11,7 @@ namespace app {
 		
 	// returned task is cahced and only updates when the data is invalidated.
 	pplx::task<std::vector<user>> get_users();
+	pplx::task<void> set_users(std::vector<user> users);
 
 	utility::string_t json_filename; // users.json
 	private:

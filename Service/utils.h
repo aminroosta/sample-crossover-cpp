@@ -9,5 +9,6 @@ namespace app {
 		static concurrency::task<utility::string_t> read_file(utility::string_t filename);
 		static concurrency::task<void> write_file(const utility::string_t content, const utility::string_t filename);
 		static concurrency::task<void> write_file(const concurrency::streams::istream& stream, utility::string_t filename);
+		static utility::string_t time_point_to_string(const std::chrono::system_clock::time_point &tp);
 	};
 }

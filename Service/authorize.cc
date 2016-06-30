@@ -3,8 +3,8 @@
 #include "repository.h"
 
 
-using namespace utility;
 using namespace app;
+using namespace utility;
 using namespace std::chrono;
 using std::vector;
 
@@ -85,6 +85,14 @@ bool authorize::validate_token(utility::string_t token) {
 	}
 
 	return true;
+}
+
+userinfo app::authorize::get_userinfo(utility::string_t token) {
+	return _users[token];
+}
+
+userinfo app::authorize::get_userinfo(web::json::value token) {
+	return get_userinfo(token[U("token")].as_string());
 }
 
 string_t authorize::_create_token() {

@@ -26,6 +26,9 @@
     <ClCompile Include="authorize.cc">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="app_routes.cc">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">
@@ -44,6 +47,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="authorize.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="app_routes.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

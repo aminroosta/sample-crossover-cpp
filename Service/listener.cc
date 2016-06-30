@@ -50,7 +50,7 @@ pplx::task<void> app::listener::dispatch(web::http::http_request req) {
 	for (auto&& elem : uri::split_query(query))
 		params[elem.first] = json::value(move(elem.second));
 
-	if (path.find(U("/unauthorized/route")) != 0 && path.find(U("/authorize")) != 0 ) {
+	if (path.find(U("/unauthorized")) != 0 && path.find(U("/authorize")) != 0 ) {
 		/* check if the user is authenticated or not */
 		if (!params[U("token")].is_string())
 			return req.reply(web::http::status_codes::Unauthorized, U("ERROR: Use /authorize api to login and use the given token"));

@@ -7,15 +7,17 @@ namespace app {
 
 	struct route_exception : public std::exception
 	{
-		route_exception(web::json::value _data, web::http::status_code _code = web::http::status_codes::InternalError) :
-			std::exception("app::route_exception"),
-			code(_code),
-			data(_data) { }
+		route_exception(web::json::value _data, web::http::status_code _code = web::http::status_codes::BadRequest) :
+			std::exception("app::route_exception"), code(_code) { 
 
-		route_exception(utility::string_t message, web::http::status_code _code = web::http::status_codes::InternalError) :
-			std::exception("app::route_exception"),
-			code(_code),
-			data(web::json::value(message)) { }
+				data[U("error")] = _data;
+		}
+
+		route_exception(utility::string_t message, web::http::status_code _code = web::http::status_codes::BadRequest) :
+			std::exception("app::route_exception"), code(_code) { 
+
+				data[U("error")] = web::json::value(message);
+		}
 
 		web::http::status_code code;
 		web::json::value data;
