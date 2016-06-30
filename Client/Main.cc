@@ -3,15 +3,13 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 
-//Globals
-//CEdit * TEST;
 class GAME_FORM : public CDialog
 {
 public:
 	GAME_FORM(CWnd* pParent = NULL) : CDialog(GAME_FORM::IDD, pParent)
 	{    }
 	// Dialog Data, name of dialog form
-	enum { IDD = DLG_LOGIN };
+	enum { IDD = DLG_CARD_ID };
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX) { CDialog::DoDataExchange(pDX); }
 	//Called right after constructor. Initialize things here.
@@ -31,8 +29,6 @@ protected:
 		catch (std::exception& e) {
 			auto msg = e.what();
 		}
-		//TEST = (CEdit *)GetDlgItem(IDC_TEST);
-		//TEST->SetWindowText(L"Hello!");
 		return true;
 	}
 public:
