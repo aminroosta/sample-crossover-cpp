@@ -1,5 +1,6 @@
 #pragma once
 #include <cpprest/http_listener.h>
+#include "authorize.h"
 #include <map>
 
 namespace app {
@@ -10,6 +11,11 @@ namespace app {
 			std::exception("app::route_exception"),
 			code(_code),
 			data(_data) { }
+
+		route_exception(utility::string_t message, web::http::status_code _code = web::http::status_codes::InternalError) :
+			std::exception("app::route_exception"),
+			code(_code),
+			data(web::json::value(message)) { }
 
 		web::http::status_code code;
 		web::json::value data;
@@ -31,5 +37,6 @@ namespace app {
 		std::vector<std::pair<utility::string_t, callback_t>> _routes;
 		web::http::experimental::listener::http_listener _listener;
 		pplx::task<void> dispatch(web::http::http_request req);
+		authorize& auth;
 	};
 }

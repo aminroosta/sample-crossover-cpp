@@ -3,14 +3,30 @@
 using namespace app;
 using namespace utility;
 using namespace web;
+using namespace web::http;
 using std::move;
 using std::pair;
 using std::vector;
 
 app::listener::listener(web::uri address)
-	: _listener(address) {
+	: _listener(address), auth(authorize::instance()) {
 	_listener.support([this](http::http_request req) {
 		return this->dispatch(req);
+	});
+
+	/* GET: /authorize?name=name&password=password */
+	register_route(U("/authorize"), [this](json::value params, json::value) {
+		if (!params[U("name")].is_string() || !params[U("password")].is_string())
+			throw route_exception(U("bad api call, call it like this: /authorize?name=name&password=password"), status_codes::BadRequest);
+		auto name = params[U("name")].as_string();
+		auto password = params[U("password")].as_string();
+
+		auto token = auth.login(name, password).get();
+		if(token.empty())
+			throw route_exception(U("username or password invalid"), status_codes::Unauthorized);
+		json::value ret;
+		ret[U("token")] = json::value(token);
+		return ret;
 	});
 }
 
@@ -33,6 +49,16 @@ pplx::task<void> app::listener::dispatch(web::http::http_request req) {
 
 	for (auto&& elem : uri::split_query(query))
 		params[elem.first] = json::value(move(elem.second));
+
+	if (path.find(U("/unauthorized/route")) != 0 && path.find(U("/authorize")) != 0 ) {
+		/* check if the user is authenticated or not */
+		if (!params[U("token")].is_string())
+			return req.reply(web::http::status_codes::Unauthorized, U("ERROR: Use /authorize api to login and use the given token"));
+
+		auto token = params[U("token")].as_string();
+		if(auth.validate_token(token) == false)
+			return req.reply(web::http::status_codes::Unauthorized, U("ERROR: token is invalid or expired"));
+	}
 
 	for(auto&& route: _routes)
 		if (path.find(route.first) == 0) {

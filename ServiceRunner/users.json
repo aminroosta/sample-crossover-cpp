@@ -1,0 +1,1 @@
+[{"balance":1000,"cards":[{"id":"1234","pin":"1234"}],"currency":"USD","name":"jack","password":"jackpassword","transactions":[{"amount":10,"date":"2016-06-28","type":"withdraw"}]},{"balance":2100,"cards":[{"id":"1234","pin":"1234"}],"currency":"EUR","name":"bob","password":"bob-password","transactions":[{"amount":12,"date":"2016-06-29","type":"withdraw"}]}]

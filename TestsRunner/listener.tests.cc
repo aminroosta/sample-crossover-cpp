@@ -21,7 +21,7 @@ TEST_CASE("http listener works as expected", "[listener]") {
 	sent_params[U("A")] = json::value(U("a"));
 
 
-	listener.register_route(U("/my/route"), [&](json::value _params, json::value _body) {
+	listener.register_route(U("/unauthorized/route/test"), [&](json::value _params, json::value _body) {
 		params = _params;
 		body = _body;
 		return result;
@@ -31,7 +31,7 @@ TEST_CASE("http listener works as expected", "[listener]") {
 	REQUIRE_NOTHROW(listener.open().wait());
 
 	http_client client(address);
-	auto req = client.request(methods::POST, U("/my/route?A=a"), sent_body);
+	auto req = client.request(methods::POST, U("/unauthorized/route/test?A=a"), sent_body);
 
 	REQUIRE_NOTHROW(req.wait());
 

@@ -1,5 +1,6 @@
 #include "authorize.h"
 #include <objbase.h>
+#include "repository.h"
 
 
 using namespace utility;

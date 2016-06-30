@@ -1,4 +1,5 @@
 #include "../Service/authorize.h"
+#include "../Service/repository.h"
 #include "catch.hpp"
 
 using namespace app;

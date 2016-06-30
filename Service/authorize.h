@@ -1,7 +1,7 @@
 #pragma once
 #include <mutex>
 #include <chrono>
-#include "repository.h"
+#include <cpprest/http_client.h>
 
 struct authorize {
 	static authorize& instance();
