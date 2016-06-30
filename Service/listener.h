@@ -3,7 +3,17 @@
 #include "authorize.h"
 #include <map>
 
+#define API_HELP_MESSAGE "\n\nYou can use the follwoing apis: \n" \
+						 "/authorize?name=name&password=apssword    - retruns a token that will last for 10 minutes.\n" \
+						 "/set/card?token=toke&id=id&pin=pin        - sets the active user card.\n" \
+						 "/balance/check?token=token                - returns account balance info.\n" \
+						 "/mini/statement?token=token               - retruns list of statements.\n" \
+						 "/cash/withdraw?token=token&amount=12              - withdraw money from your account.\n" \
+						 "/pin/change?token=token&oldpin=oldpin&newpin=new  - change active card pin number.\n" \
+						 "\n\nCheck users.json file on the server to see the list of  registered users."
+
 namespace app {
+
 
 	struct route_exception : public std::exception
 	{
@@ -11,12 +21,14 @@ namespace app {
 			std::exception("app::route_exception"), code(_code) { 
 
 				data[U("error")] = _data;
+				data[U("help")] = web::json::value(U(API_HELP_MESSAGE));
 		}
 
 		route_exception(utility::string_t message, web::http::status_code _code = web::http::status_codes::BadRequest) :
 			std::exception("app::route_exception"), code(_code) { 
 
 				data[U("error")] = web::json::value(message);
+				data[U("help")] = web::json::value(U(API_HELP_MESSAGE));
 		}
 
 		web::http::status_code code;

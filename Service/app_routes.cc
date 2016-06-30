@@ -132,6 +132,6 @@ value app::app_routes::mini_statement(value params, value body) {
 
 	value ret;
 	ret[U("status")] = value(U("OK"));
-	ret[U("transactions")] = serializeable<std::vector<transaction>>::serialize(user.transactions);
+	ret[U("statements")] = serializeable<std::vector<transaction>>::serialize(user.transactions);
 	return ret;
 } 

@@ -23,7 +23,8 @@ int main() {
 
 	listener.open().wait();
 
-	wcout << U("Server is running at ") << address.to_string() << endl;
+	wcout << U("Server is running at ") << address.to_string() << U(" ...") << endl;
+	wcout << U("On your browser open http://127.0.0.1:3000 to test it.") << endl;
 	char ch; std::cin >> ch >> ch;
 
 	return 0;

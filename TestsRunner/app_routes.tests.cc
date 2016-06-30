@@ -77,4 +77,28 @@ TEST_CASE("all app routes work just fine", "[app_routes]") {
 	/* /cash/withdraw works fine */
 	REQUIRE(req.get().has_field(U("balance")));
 
+	req = client.request(
+		methods::GET,
+		uri_builder(U("/pin/change"))
+		.append_query(U("token"), token)
+		.append_query(U("oldpin"), crd.pin)
+		.append_query(U("newpin"), "2323")
+		.to_string()
+	).then([](http_response res) { return res.extract_json();  });
+
+	/* /pin/change works fine */
+	REQUIRE(req.get().has_field(U("card")));
+
+
+	req = client.request(
+		methods::GET,
+		uri_builder(U("/mini/statement"))
+		.append_query(U("token"), token)
+		.to_string()
+	).then([](http_response res) { return res.extract_json();  });
+
+	/* /mini/statement works fine */
+	REQUIRE(req.get().has_field(U("statements")));
+
+	listener.close().wait();
 }

@@ -53,11 +53,19 @@ pplx::task<void> app::listener::dispatch(web::http::http_request req) {
 	if (path.find(U("/unauthorized")) != 0 && path.find(U("/authorize")) != 0 ) {
 		/* check if the user is authenticated or not */
 		if (!params[U("token")].is_string())
-			return req.reply(web::http::status_codes::Unauthorized, U("ERROR: Use /authorize api to login and use the given token"));
+			return req.reply(
+				web::http::status_codes::Unauthorized,
+				U("ERROR: Use /authorize api to login and use the given token")
+				U(API_HELP_MESSAGE)
+			);
 
 		auto token = params[U("token")].as_string();
 		if(auth.validate_token(token) == false)
-			return req.reply(web::http::status_codes::Unauthorized, U("ERROR: token is invalid or expired"));
+			return req.reply(
+				web::http::status_codes::Unauthorized,
+				U("ERROR: token is invalid or expired")
+				U(API_HELP_MESSAGE)
+			);
 	}
 
 	for(auto&& route: _routes)
