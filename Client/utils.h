@@ -8,3 +8,6 @@ void get_item(CType** pctype, CDialog* dialog, int ID) {
 }
 
 concurrency::task<web::json::value> get_app_config();
+
+// Returns a task that completes after the specified delay.
+pplx::task<void> complete_after(unsigned int timeout);

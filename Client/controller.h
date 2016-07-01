@@ -56,4 +56,5 @@ struct controller {
 
 	void login_user();
 	void card_set();
+	void cash_withdraw(int amount);
 };

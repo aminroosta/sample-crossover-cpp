@@ -91,6 +91,18 @@ void controller::btn_next_click() {
 		cwnd(btn_next).disable();
 		cwnd(btn_perv).disable();
 		card_set();
+		return;
+	}
+	if (page == CASH_WITHDRAW_PAGE) {
+		auto str = cwnd(txt_confirm).gettext();
+		if (str.empty() || str.find_first_not_of(U("0123456789")) != string_t::npos) {
+			cwnd(lbl_status).enable().text(U("Amount must be an integer!"));
+			return;
+		}
+		auto amount = std::stoi(str);
+		cwnd(txt_confirm).text();
+		cash_withdraw(amount);
+		return;
 	}
 }
 
@@ -120,6 +132,8 @@ void controller::btn_perv_click() {
 
 		cwnd(lbl_first).hide();
 		cwnd(lbl_second).hide();
+		cwnd(txt_input).hide();
+		cwnd(txt_confirm).hide();
 		cwnd(lst).hide();
 		cwnd(lbl_status).enable().text(U("Select you operation from the above menu."));
 		cwnd(btn_balance_check).enable();
@@ -138,25 +152,33 @@ pplx::task<value> controller::mainmenu_helper(std::function<pplx::task<value>(vo
 	cwnd(btn_pin_change).disable();
 	cwnd(btn_mini_statement).disable();
 	cwnd(btn_perv).disable();
-	return getter().then([this](value res) {
-		if (res.has_field(U("error"))) {
-			cwnd(btn_balance_check).enable();
-			cwnd(btn_cash_withdraw).enable();
-			cwnd(btn_pin_change).enable();
-			cwnd(btn_mini_statement).enable();
+	if (getter != nullptr) {
+		return getter().then([this](value res) {
+			if (res.has_field(U("error"))) {
+				cwnd(btn_balance_check).enable();
+				cwnd(btn_cash_withdraw).enable();
+				cwnd(btn_pin_change).enable();
+				cwnd(btn_mini_statement).enable();
+				cwnd(btn_perv).enable();
+				cwnd(lbl_status).enable().text(res[U("error")].to_string());
+
+				return value::null();
+			}
+
+			cwnd(btn_balance_check).hide();
+			cwnd(btn_cash_withdraw).hide();
+			cwnd(btn_pin_change).hide();
+			cwnd(btn_mini_statement).hide();
 			cwnd(btn_perv).enable();
-			cwnd(lbl_status).enable().text(res[U("error")].to_string());
-
-			return value::null();
-		}
-
-		cwnd(btn_balance_check).hide();
-		cwnd(btn_cash_withdraw).hide();
-		cwnd(btn_pin_change).hide();
-		cwnd(btn_mini_statement).hide();
-		cwnd(btn_perv).enable();
-		return res;
-	});
+			return res;
+		});
+	}
+	cwnd(btn_balance_check).hide();
+	cwnd(btn_cash_withdraw).hide();
+	cwnd(btn_pin_change).hide();
+	cwnd(btn_mini_statement).hide();
+	cwnd(btn_perv).enable();
+	return pplx::task<value>([] { return value::null();  });
 }
 
 void controller::btn_balance_check_click() {
@@ -178,6 +200,13 @@ void controller::btn_balance_check_click() {
 }
 
 void controller::btn_cash_withdraw_click() {
+	mainmenu_helper(nullptr).then([this](value) {
+		cwnd(lbl_status).enable().text(U("Amount must be less than your balance."));
+		cwnd(lbl_second).enable().text(U("Enter withdrawal amount: "));
+		cwnd(txt_confirm).enable().text();
+		cwnd(btn_next).enable();
+		page = CASH_WITHDRAW_PAGE;
+	});
 }
 
 void controller::btn_pin_change_click() {
@@ -233,4 +262,22 @@ void controller::card_set() {
 			cwnd(btn_pin_change).show();
 			cwnd(btn_mini_statement).show();
 		});
+}
+
+void controller::cash_withdraw(int amount) {
+	cwnd(btn_next).disable();
+	cwnd(lbl_status).enable().text(U("Performing the transaction ..."));
+	repo.cash_withdraw(amount).then([this](value res) {
+		if (res.has_field(U("error"))) {
+			cwnd(lbl_status).text(res[U("error")].to_string());
+			cwnd(btn_next).enable();
+			return;
+		}
+
+		cwnd(lbl_notify).enable().text(U("Transaction was successfull."));
+		complete_after(2000).then([this] {
+			cwnd(lbl_notify).hide();
+		});
+		btn_perv_click();
+	});
 }
