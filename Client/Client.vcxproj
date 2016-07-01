@@ -96,7 +96,7 @@
     <ClInclude Include="controller.h" />
     <ClInclude Include="repository.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="state.h" />
+    <ClInclude Include="cwnd.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>

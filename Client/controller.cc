@@ -1,6 +1,6 @@
 #include "controller.h"
 #include "utils.h"
-#include "state.h"
+#include "cwnd.h"
 
 using namespace utility;
 using web::json::value;
@@ -42,26 +42,33 @@ void controller::init(CDialog * dialog) {
 	get_item(&btn_pin_change, dialog, BTN_PIN_CHANGE);
 	get_item(&btn_mini_statement, dialog, BTN_MINI_STATEMENT);
 
-	state().visible(false).apply_to(lst);
-	state().active(false).apply_to(txt_input).text();
-	state().visible(false).apply_to(txt_confirm);
 
-	state().active(false).apply_to(lbl_first).text(U("Enter the 4 digit card id: "));
-	state().active(true).apply_to(lbl_second).text();
-	state().active(true).apply_to(lbl_status).text();
-	state().active(true).apply_to(lbl_notify).text();
-	state().active(false).apply_to(btn_next).text(U("Next"));
-	state().visible(false).apply_to(btn_perv);
-	state().visible(false).apply_to(btn_balance_check);
-	state().visible(false).apply_to(btn_cash_withdraw);
-	state().visible(false).apply_to(btn_pin_change);
-	state().visible(false).apply_to(btn_mini_statement);
+	cwnd(lst).hide();
+	cwnd(txt_input).disable().text();
+	cwnd(txt_confirm).hide();
+
+	cwnd(lbl_first).disable().text(U("Enter the 4 digit card id: "));
+	cwnd(lbl_second).disable().text();
+	cwnd(lbl_status).disable().text();
+	cwnd(lbl_notify).disable().text();
+
+	cwnd(btn_next).disable().text(U("Next"));
+	cwnd(btn_perv).hide();
+	cwnd(btn_balance_check).hide();
+	cwnd(btn_cash_withdraw).hide();
+	cwnd(btn_pin_change).hide();
+	cwnd(btn_mini_statement).hide();
 
 	config = get_app_config().get();
 	login_user();
 }
 
+string_t cardid;
+
 void controller::btn_next_click() {
+	if (page == CARDID_PAGE) {
+			
+	}
 	//CString cpin;
 	//txt_cardid->GetWindowTextW(cpin);
 	//std::wstring pin(cpin);
@@ -70,16 +77,17 @@ void controller::btn_next_click() {
 }
 
 void controller::login_user() {
-	state().active(true).apply_to(lbl_status).text(U("Logging into rest server ..."));
+	cwnd(lbl_status).enable().text(U("Logging into rest server ..."));
 	repo.authorize(config[U("name")].as_string(), config[U("password")].as_string())
 		.then([this](value res) {
 			if (res.has_field(U("error"))) {
-				state().active(true).apply_to(lbl_status).text(res[U("error")].to_string());
+				cwnd(lbl_status).text(res[U("error")].to_string());
 				return;
 			}
-			state().active(true).apply_to(lbl_first).text(U("Enter your card id: "));
-			state().active(true).apply_to(txt_input);
-			state().active(true).apply_to(btn_next).text(U("Next"));
-			state().active(true).apply_to(lbl_status).text(U("Login was successfull"));
+
+			cwnd(lbl_first).enable().text(U("Enter your card id: "));
+			cwnd(txt_input).enable();
+			cwnd(btn_next).enable().text(U("Next"));
+			cwnd(lbl_status).enable().text(U("Login successfull. Enter your cardid now."));
 		});
 }

@@ -27,7 +27,7 @@
     <ClInclude Include="repository.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="state.h">
+    <ClInclude Include="cwnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
