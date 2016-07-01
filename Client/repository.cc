@@ -38,3 +38,27 @@ pplx::task<value> repository::authorize(string_t name, string_t password) {
 		return ret;
 	});
 }
+
+pplx::task<web::json::value> repository::set_card(utility::string_t id, utility::string_t pin)
+{
+	return
+		client.request(methods::GET,
+			uri_builder(U("/set/card"))
+			.append_query(U("token"), token)
+			.append_query(U("id"), id)
+			.append_query(U("pin"), pin)
+			.to_string()
+		).then([](http_response response) {
+			return response.extract_json();
+		}).then([this](pplx::task<value> pervTask) {
+			value ret;
+			try {
+				ret = pervTask.get();
+			}
+			catch (std::exception& e) {
+				auto error = utility::conversions::to_string_t(e.what());
+				ret[U("error")] = value(error);
+			}
+			return ret;
+		});
+}

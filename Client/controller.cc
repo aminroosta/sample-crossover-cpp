@@ -81,6 +81,17 @@ void controller::btn_next_click() {
 		cwnd(btn_perv).enable().text(U("Back"));
 		return;
 	}
+	if (page == PIN_PAGE) {
+		auto pin = cwnd(txt_input).gettext();
+		if (pin.length() != 4) {
+			cwnd(lbl_status).enable().text(U("Pin number must be 4 digits!"));
+			return;
+		}
+		state[U("pin")] = value(pin);
+		cwnd(btn_next).disable();
+		cwnd(btn_perv).disable();
+		card_set();
+	}
 }
 
 void controller::btn_perv_click() {
@@ -108,5 +119,31 @@ void controller::login_user() {
 			cwnd(txt_input).enable();
 			cwnd(btn_next).enable().text(U("Next"));
 			cwnd(lbl_status).enable().text(U("Login successfull. Enter your cardid now."));
+		});
+}
+
+void controller::card_set() {
+	cwnd(lbl_status).enable().text(U("Entering with your cardid and pin ..."));
+	repo.set_card(state[U("cardid")].as_string(), state[U("pin")].as_string())
+		.then([this](value res) {
+			if (res.has_field(U("error"))) {
+				cwnd(lbl_status).text(res[U("error")].to_string());
+				cwnd(btn_next).enable();
+				cwnd(btn_perv).enable();
+				return;
+			}
+
+			page = MAIN_PAGE;
+			cwnd(lbl_first).hide();
+			cwnd(lbl_second).hide();
+			cwnd(txt_input).hide();
+			cwnd(txt_confirm).hide();
+			cwnd(btn_perv).enable().text(U("Logout"));
+			cwnd(btn_next).hide();
+			cwnd(lbl_status).enable().text(U("Select you operation from the above menu."));
+			cwnd(btn_balance_check).show();
+			cwnd(btn_cash_withdraw).show();
+			cwnd(btn_pin_change).show();
+			cwnd(btn_mini_statement).show();
 		});
 }

@@ -49,5 +49,7 @@ struct controller {
 	void btn_cash_withdraw_click();
 	void btn_pin_change_click();
 	void btn_mini_statement_click();
+
 	void login_user();
+	void card_set();
 };
