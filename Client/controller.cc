@@ -103,6 +103,17 @@ void controller::btn_perv_click() {
 		cwnd(btn_next).enable().text(U("Next"));
 		cwnd(lbl_first).enable().text(U("Enter your card id: "));
 		cwnd(lbl_status).text(U("Enter you 4 digit card id to continue."));
+		return;
+	}
+	else if (page == MAIN_PAGE) {
+		cwnd(btn_balance_check).disable();
+		cwnd(btn_cash_withdraw).disable();
+		cwnd(btn_pin_change).disable();
+		cwnd(btn_mini_statement).disable();
+		cwnd(btn_perv).disable();
+		cwnd(btn_next).disable();
+
+		login_user();
 	}
 }
 
@@ -115,10 +126,17 @@ void controller::login_user() {
 				return;
 			}
 
+			page = CARDID_PAGE;
 			cwnd(lbl_first).enable().text(U("Enter your card id: "));
 			cwnd(txt_input).enable();
 			cwnd(btn_next).enable().text(U("Next"));
 			cwnd(lbl_status).enable().text(U("Login successfull. Enter your cardid now."));
+
+			cwnd(btn_balance_check).hide();
+			cwnd(btn_cash_withdraw).hide();
+			cwnd(btn_pin_change).hide();
+			cwnd(btn_mini_statement).hide();
+			cwnd(btn_perv).hide();
 		});
 }
 
@@ -138,7 +156,7 @@ void controller::card_set() {
 			cwnd(lbl_second).hide();
 			cwnd(txt_input).hide();
 			cwnd(txt_confirm).hide();
-			cwnd(btn_perv).enable().text(U("Logout"));
+			cwnd(btn_perv).enable().text(U("Back"));
 			cwnd(btn_next).hide();
 			cwnd(lbl_status).enable().text(U("Select you operation from the above menu."));
 			cwnd(btn_balance_check).show();
