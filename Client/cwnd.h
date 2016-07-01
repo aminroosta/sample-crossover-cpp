@@ -29,7 +29,8 @@ struct cwnd {
 	utility::string_t gettext() {
 		CString cpin;
 		wnd->GetWindowTextW(cpin);
-		utility::string_t pin(cpin);
+		CT2A wcpin(cpin);
+		return utility::conversions::to_string_t((LPSTR)wcpin);
 	}
 
 private:

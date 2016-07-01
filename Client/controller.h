@@ -38,9 +38,16 @@ struct controller {
 	CButton* btn_mini_statement;
 
 	repository repo;
+
 	pages page;
 	web::json::value config;
+	web::json::value state;
 	/* ---------------------- events ----------------------*/
 	void btn_next_click();
+	void btn_perv_click();
+	void btn_balance_check_click();
+	void btn_cash_withdraw_click();
+	void btn_pin_change_click();
+	void btn_mini_statement_click();
 	void login_user();
 };

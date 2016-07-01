@@ -63,17 +63,36 @@ void controller::init(CDialog * dialog) {
 	login_user();
 }
 
-string_t cardid;
 
 void controller::btn_next_click() {
 	if (page == CARDID_PAGE) {
-			
+		auto cardid = cwnd(txt_input).gettext();
+		if (cardid.length() != 4) {
+			cwnd(lbl_status).enable().text(U("Card id must be 4 digits!"));
+			return;
+		}
+		page = PIN_PAGE;
+
+		state[U("cardid")] = value(cardid);
+		cwnd(txt_input).text();
+		cwnd(btn_next).text(U("Enter"));
+		cwnd(lbl_first).text(U("Enter your 4 digit pin number:"));
+		cwnd(lbl_status).text(U("Enter you pin number to enter."));
+		cwnd(btn_perv).enable().text(U("Back"));
+		return;
 	}
-	//CString cpin;
-	//txt_cardid->GetWindowTextW(cpin);
-	//std::wstring pin(cpin);
-	//lbl_status->SetWindowTextW(pin.c_str());
-	//btn_next->ShowWindow(SW_HIDE);
+}
+
+void controller::btn_perv_click() {
+	if (page == PIN_PAGE) {
+		page = CARDID_PAGE;
+
+		cwnd(txt_input).text();
+		cwnd(btn_perv).hide();
+		cwnd(btn_next).enable().text(U("Next"));
+		cwnd(lbl_first).enable().text(U("Enter your card id: "));
+		cwnd(lbl_status).text(U("Enter you 4 digit card id to continue."));
+	}
 }
 
 void controller::login_user() {

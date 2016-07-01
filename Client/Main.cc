@@ -52,6 +52,7 @@ protected:
 public:
 	/* --------------------- event handlers ----------------------- */
 	afx_msg void btn_next_click() { controller.btn_next_click(); }
+	afx_msg void btn_perv_click() { controller.btn_perv_click(); }
 	/* --------------------- end event handlers --------------------*/
 	DECLARE_MESSAGE_MAP()
 };
@@ -71,7 +72,7 @@ struct MainApp : public CWinApp {
 /*------------------------------ message maps -----------------------------------*/
 BEGIN_MESSAGE_MAP(MainForm, CDialog)
 	ON_COMMAND(BTN_NEXT, btn_next_click)
-	ON_COMMAND(TXT_INPUT, btn_next_click)
+	ON_COMMAND(BTN_PERV, btn_perv_click)
 END_MESSAGE_MAP()
 
 MainApp main_app;
