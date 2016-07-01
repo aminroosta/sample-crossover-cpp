@@ -45,6 +45,10 @@ struct controller {
 	/* ---------------------- events ----------------------*/
 	void btn_next_click();
 	void btn_perv_click();
+
+	/* helper function for main menu buttons */
+	pplx::task<web::json::value> mainmenu_helper(std::function<pplx::task<web::json::value>(void)> getter);
+
 	void btn_balance_check_click();
 	void btn_cash_withdraw_click();
 	void btn_pin_change_click();

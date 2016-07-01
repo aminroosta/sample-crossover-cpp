@@ -115,9 +115,66 @@ void controller::btn_perv_click() {
 
 		login_user();
 	}
+	else if (page == BALANCE_CHECK_PAGE || page == CASH_WITHDRAW_PAGE
+		|| page == PIN_CHANGE_PAGE || page == MINI_STATEMENT_PAGE) {
+
+		cwnd(lbl_first).hide();
+		cwnd(lbl_second).hide();
+		cwnd(lst).hide();
+		cwnd(lbl_status).enable().text(U("Select you operation from the above menu."));
+		cwnd(btn_balance_check).enable();
+		cwnd(btn_cash_withdraw).enable();
+		cwnd(btn_pin_change).enable();
+		cwnd(btn_mini_statement).enable();
+		cwnd(btn_next).hide();
+		page = MAIN_PAGE;
+	}
+}
+
+
+pplx::task<value> controller::mainmenu_helper(std::function<pplx::task<value>(void)> getter) {
+	cwnd(btn_balance_check).disable();
+	cwnd(btn_cash_withdraw).disable();
+	cwnd(btn_pin_change).disable();
+	cwnd(btn_mini_statement).disable();
+	cwnd(btn_perv).disable();
+	return getter().then([this](value res) {
+		if (res.has_field(U("error"))) {
+			cwnd(btn_balance_check).enable();
+			cwnd(btn_cash_withdraw).enable();
+			cwnd(btn_pin_change).enable();
+			cwnd(btn_mini_statement).enable();
+			cwnd(btn_perv).enable();
+			cwnd(lbl_status).enable().text(res[U("error")].to_string());
+
+			return value::null();
+		}
+
+		cwnd(btn_balance_check).hide();
+		cwnd(btn_cash_withdraw).hide();
+		cwnd(btn_pin_change).hide();
+		cwnd(btn_mini_statement).hide();
+		cwnd(btn_perv).enable();
+		return res;
+	});
 }
 
 void controller::btn_balance_check_click() {
+	cwnd(lbl_status).enable().text(U("Getting your balance infomation ..."));
+	mainmenu_helper([this] {return repo.balance_check(); }).then([this](value res) {
+		if (res.is_null()) return;
+		page = BALANCE_CHECK_PAGE;
+
+		string_t balance = U("Your balance: ");
+		balance = balance + res[U("balance")].to_string();
+
+		string_t currency = U("Currency ");
+		currency = currency + res[U("currency")].to_string();
+
+		cwnd(lbl_first).enable().text(balance);
+		cwnd(lbl_second).enable().text(currency);
+		cwnd(lbl_status).enable().text();
+	});
 }
 
 void controller::btn_cash_withdraw_click() {
