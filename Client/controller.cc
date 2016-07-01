@@ -104,6 +104,20 @@ void controller::btn_next_click() {
 		cash_withdraw(amount);
 		return;
 	}
+	if (page == PIN_CHANGE_PAGE) {
+		auto oldpin = cwnd(txt_input).gettext();
+		auto newpin = cwnd(txt_confirm).gettext();
+
+		if (oldpin.length() != 4 || newpin.length() != 4) {
+			cwnd(lbl_status).enable().text(U("Both pins should be 4 digits!"));
+			return;
+		}
+
+		cwnd(txt_input).text();
+		cwnd(txt_confirm).text();
+		pin_change(oldpin, newpin);
+		return;
+	}
 }
 
 void controller::btn_perv_click() {
@@ -204,12 +218,21 @@ void controller::btn_cash_withdraw_click() {
 		cwnd(lbl_status).enable().text(U("Amount must be less than your balance."));
 		cwnd(lbl_second).enable().text(U("Enter withdrawal amount: "));
 		cwnd(txt_confirm).enable().text();
-		cwnd(btn_next).enable();
+		cwnd(btn_next).enable().text(U("Withdraw"));
 		page = CASH_WITHDRAW_PAGE;
 	});
 }
 
 void controller::btn_pin_change_click() {
+	mainmenu_helper(nullptr).then([this](value) {
+		cwnd(lbl_status).enable().text();
+		cwnd(lbl_first).enable().text(U("Enter your current pin: "));
+		cwnd(lbl_second).enable().text(U("Enter the new pin: "));
+		cwnd(txt_input).enable().text();
+		cwnd(txt_confirm).enable().text();
+		cwnd(btn_next).enable().text(U("Change"));
+		page = PIN_CHANGE_PAGE;
+	});
 }
 
 void controller::btn_mini_statement_click() {
@@ -275,6 +298,24 @@ void controller::cash_withdraw(int amount) {
 		}
 
 		cwnd(lbl_notify).enable().text(U("Transaction was successfull."));
+		complete_after(2000).then([this] {
+			cwnd(lbl_notify).hide();
+		});
+		btn_perv_click();
+	});
+}
+
+void controller::pin_change(utility::string_t oldpin, utility::string_t newpin) {
+	cwnd(btn_next).disable();
+	cwnd(lbl_status).enable().text(U("Changing your pin number ..."));
+	repo.pin_change(oldpin, newpin).then([this](value res) {
+		if (res.has_field(U("error"))) {
+			cwnd(lbl_status).text(res[U("error")].to_string());
+			cwnd(btn_next).enable();
+			return;
+		}
+
+		cwnd(lbl_notify).enable().text(U("Pin number change successfull."));
 		complete_after(2000).then([this] {
 			cwnd(lbl_notify).hide();
 		});
