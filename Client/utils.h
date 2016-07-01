@@ -1,7 +1,10 @@
 #pragma once
 #include <afxwin.h>
+#include <cpprest/json.h>
 
-template<typename T>
-T* get_item(CDialog* dialog, int ID) {
-	return (T*) dialog->GetDlgItem(ID);
+template<typename CType>
+void get_item(CType** pctype, CDialog* dialog, int ID) {
+	*pctype = (CType*)dialog->GetDlgItem(ID);
 }
+
+concurrency::task<web::json::value> get_app_config();
