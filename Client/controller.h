@@ -39,6 +39,8 @@ struct controller {
 
 	repository repo;
 	pages page;
+	web::json::value config;
 	/* ---------------------- events ----------------------*/
 	void btn_next_click();
+	void login_user();
 };

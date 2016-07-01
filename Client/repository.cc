@@ -32,7 +32,8 @@ pplx::task<value> repository::authorize(string_t name, string_t password) {
 				this->token = ret[U("token")].as_string();
 		}
 		catch (std::exception& e) {
-			ret[U("error")] = value(e.what());
+			auto error = utility::conversions::to_string_t(e.what());
+			ret[U("error")] = value(error);
 		}
 		return ret;
 	});
