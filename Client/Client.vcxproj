@@ -87,11 +87,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="login.cc" />
+    <ClCompile Include="controller.cc" />
     <ClCompile Include="main.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="login.h" />
+    <ClInclude Include="controller.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

@@ -2,21 +2,18 @@
 #include "resource.h"
 #include <opencv2/opencv.hpp>
 #include <vector>
-#include "login.h"
+#include "controller.h"
 
-class GAME_FORM : public CDialog {
+class MainForm : public CDialog {
 public:
-	GAME_FORM(CWnd* pParent = NULL) : CDialog(GAME_FORM::IDD, pParent)
-	{    }
-	// Dialog Data, name of dialog form
-	enum { IDD = DLG_CARD_ID };
+	MainForm(CWnd* pParent = NULL) : CDialog(MAIN_FORM, pParent) {    }
 protected:
 	//virtual void DoDataExchange(CDataExchange* pDX) { CDialog::DoDataExchange(pDX); }
 	//Called right after constructor. Initialize things here.
-	login login;
+	controller controller;
 	virtual BOOL OnInitDialog() {
 		CDialog::OnInitDialog();
-		login.init(this);
+		controller.init(this);
 
 		//try {
 		//	cv::VideoCapture cap(0);
@@ -41,7 +38,7 @@ protected:
 
 		switch (ctrl_ID) {
 			case TXT_INPUT:
-				ctrl_next = login.btn_next;
+				ctrl_next = controller.btn_next;
 				break;
 			case IDOK:
 				CDialog::OnOK();
@@ -54,7 +51,7 @@ protected:
 
 public:
 	/* --------------------- event handlers ----------------------- */
-	afx_msg void btn_next_click() { login.btn_next_click(); }
+	afx_msg void btn_next_click() { controller.btn_next_click(); }
 	/* --------------------- end event handlers --------------------*/
 	DECLARE_MESSAGE_MAP()
 };
@@ -63,16 +60,16 @@ struct MainApp : public CWinApp {
 	MainApp() {  }
 	virtual int InitInstance() {
 		CWinApp::InitInstance();
-		GAME_FORM dlg;
-		m_pMainWnd = &dlg;
-		INT_PTR nResponse = dlg.DoModal();
+		MainForm form;
+		m_pMainWnd = &form;
+		INT_PTR nResponse = form.DoModal();
 		return false;
 	}
 };
 //-----------------------------------------------------------------------------------------
 
 /*------------------------------ message maps -----------------------------------*/
-BEGIN_MESSAGE_MAP(GAME_FORM, CDialog)
+BEGIN_MESSAGE_MAP(MainForm, CDialog)
 	ON_COMMAND(BTN_NEXT, btn_next_click)
 	ON_COMMAND(TXT_INPUT, btn_next_click)
 END_MESSAGE_MAP()
