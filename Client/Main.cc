@@ -53,6 +53,10 @@ public:
 	/* --------------------- event handlers ----------------------- */
 	afx_msg void btn_next_click() { controller.btn_next_click(); }
 	afx_msg void btn_perv_click() { controller.btn_perv_click(); }
+	afx_msg void btn_balance_check_click() { controller.btn_balance_check_click(); }
+	afx_msg void btn_cash_withdraw_click() { controller.btn_cash_withdraw_click(); }
+	afx_msg void btn_pin_change_click() { controller.btn_pin_change_click(); }
+	afx_msg void btn_mini_statement_click() { controller.btn_mini_statement_click(); }
 	/* --------------------- end event handlers --------------------*/
 	DECLARE_MESSAGE_MAP()
 };
@@ -67,12 +71,15 @@ struct MainApp : public CWinApp {
 		return false;
 	}
 };
-//-----------------------------------------------------------------------------------------
 
 /*------------------------------ message maps -----------------------------------*/
 BEGIN_MESSAGE_MAP(MainForm, CDialog)
 	ON_COMMAND(BTN_NEXT, btn_next_click)
 	ON_COMMAND(BTN_PERV, btn_perv_click)
+	ON_COMMAND(BTN_BALANCE_CHECK, btn_balance_check_click)
+	ON_COMMAND(BTN_CASH_WITHDRAW, btn_cash_withdraw_click)
+	ON_COMMAND(BTN_PIN_CHANGE, btn_pin_change_click)
+	ON_COMMAND(BTN_MINI_STATEMENT, btn_mini_statement_click)
 END_MESSAGE_MAP()
 
 MainApp main_app;

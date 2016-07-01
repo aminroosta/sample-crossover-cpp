@@ -117,6 +117,18 @@ void controller::btn_perv_click() {
 	}
 }
 
+void controller::btn_balance_check_click() {
+}
+
+void controller::btn_cash_withdraw_click() {
+}
+
+void controller::btn_pin_change_click() {
+}
+
+void controller::btn_mini_statement_click() {
+}
+
 void controller::login_user() {
 	cwnd(lbl_status).enable().text(U("Logging into rest server ..."));
 	repo.authorize(config[U("name")].as_string(), config[U("password")].as_string())
