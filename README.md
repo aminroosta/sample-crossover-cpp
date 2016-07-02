@@ -15,11 +15,11 @@ All webserver routes return *json*, you can use the browser to call apis as well
 *Service* uses cpprestsdk, i've implemented all operations via nonblocking `pplx::task<T>` methods. If you delete `/ServiceRunner/users.json` file the service will create a new list of dummy users. For unit tests see the *TestsRunner* porject.
 
 Screenshots of calling *Service* from browser.
-![Alt text](/screenshots/11.png?raw=true "Service Rest API")
-![Alt text](/screenshots/12.png?raw=true "Service Rest API")
-![Alt text](/screenshots/13.png?raw=true "Service Rest API")
-![Alt text](/screenshots/14.png?raw=true "Service Rest API")
-![Alt text](/screenshots/15.png?raw=true "Service Rest API")
-![Alt text](/screenshots/16.png?raw=true "Service Rest API")
-![Alt text](/screenshots/17.png?raw=true "Service Rest API")
+![Alt text](screenshots/11.png?raw=true "Service Rest API")
+![Alt text](screenshots/12.png?raw=true "Service Rest API")
+![Alt text](screenshots/13.png?raw=true "Service Rest API")
+![Alt text](screenshots/14.png?raw=true "Service Rest API")
+![Alt text](screenshots/15.png?raw=true "Service Rest API")
+![Alt text](screenshots/16.png?raw=true "Service Rest API")
+![Alt text](screenshots/17.png?raw=true "Service Rest API")
 
