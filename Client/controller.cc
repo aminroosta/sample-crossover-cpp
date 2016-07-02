@@ -26,7 +26,7 @@ controller::controller() :
 void controller::init(CDialog * dialog) {
 	get_item(&form, dialog, MAIN_FORM);
 
-	get_item(&lst, dialog, LST);
+	get_item(&lst, dialog, LST_STATEMENTS);
 	get_item(&txt_input, dialog, TXT_INPUT);
 	get_item(&txt_confirm, dialog, TXT_CONFIRM);
 
@@ -42,6 +42,9 @@ void controller::init(CDialog * dialog) {
 	get_item(&btn_pin_change, dialog, BTN_PIN_CHANGE);
 	get_item(&btn_mini_statement, dialog, BTN_MINI_STATEMENT);
 
+	lst->InsertColumn(0, U("Type"), LVCFMT_LEFT, 230);
+	lst->InsertColumn(1, U("Amout"), LVCFMT_LEFT, 200);
+	lst->InsertColumn(2, U("Date"), LVCFMT_LEFT, 400);
 
 	cwnd(lst).hide();
 	cwnd(txt_input).disable().text();
@@ -184,15 +187,27 @@ pplx::task<value> controller::mainmenu_helper(std::function<pplx::task<value>(vo
 			cwnd(btn_pin_change).hide();
 			cwnd(btn_mini_statement).hide();
 			cwnd(btn_perv).enable();
+			/*------------------------ take a picture from webcam -----------------*/
+			try_take_picture().then([this](string_t msg) {
+				cwnd(lbl_notify).enable().text(msg);
+				complete_after(2000).then([this] { cwnd(lbl_notify).text(); });
+			});
 			return res;
 		});
 	}
-	cwnd(btn_balance_check).hide();
-	cwnd(btn_cash_withdraw).hide();
-	cwnd(btn_pin_change).hide();
-	cwnd(btn_mini_statement).hide();
-	cwnd(btn_perv).enable();
-	return pplx::task<value>([] { return value::null();  });
+	else {
+		cwnd(btn_balance_check).hide();
+		cwnd(btn_cash_withdraw).hide();
+		cwnd(btn_pin_change).hide();
+		cwnd(btn_mini_statement).hide();
+		cwnd(btn_perv).enable();
+		/*------------------------ take a picture from webcam -----------------*/
+		try_take_picture().then([this](string_t msg) {
+			cwnd(lbl_notify).enable().text(msg);
+			complete_after(2000).then([this] { cwnd(lbl_notify).text(); });
+		});
+		return pplx::task<value>([] { return value::null();  });
+	}
 }
 
 void controller::btn_balance_check_click() {
@@ -236,6 +251,31 @@ void controller::btn_pin_change_click() {
 }
 
 void controller::btn_mini_statement_click() {
+	cwnd(lbl_status).enable().text(U("Getting your transactions list ..."));
+	mainmenu_helper([this] {return repo.mini_statement(); }).then([this](value res) {
+		if (res.is_null()) return;
+		page = MINI_STATEMENT_PAGE;
+
+		auto statemetns = res[U("statements")].as_array();
+		size_t inx = 0;
+		lst->DeleteAllItems();
+		for (auto& s : statemetns) {
+			auto type = s[U("type")].as_string();
+			auto amount = s[U("amount")].to_string();
+			auto date =	s[U("date")].as_string();
+
+			auto pos = lst->InsertItem(inx, type.c_str());
+			lst->SetItemText(pos, 1, amount.c_str());
+			lst->SetItemText(pos, 2, date.c_str());
+
+			++inx;
+		}
+
+		cwnd(lst).enable();
+		cwnd(btn_next).hide();
+		cwnd(lbl_status).text();
+		cwnd(lbl_second).enable().text(U("Transaction list: "));
+	});
 }
 
 void controller::login_user() {

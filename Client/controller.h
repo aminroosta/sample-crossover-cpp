@@ -1,5 +1,6 @@
 #pragma once
 #include <afxwin.h>      //MFC core and standard components
+#include <afxcmn.h>	
 #include "resource.h"    //main symbols
 #include "repository.h"
 #include <string>
@@ -21,7 +22,7 @@ struct controller {
 
 	CDialog* form;
 
-	CEdit* lst;
+	CListCtrl* lst;
 	CEdit* txt_input;
 	CEdit* txt_confirm;
 

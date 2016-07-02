@@ -1,6 +1,5 @@
 #include <afxwin.h>
 #include "resource.h"
-#include <opencv2/opencv.hpp>
 #include <vector>
 #include "controller.h"
 
@@ -14,19 +13,6 @@ protected:
 	virtual BOOL OnInitDialog() {
 		CDialog::OnInitDialog();
 		controller.init(this);
-
-		//try {
-		//	cv::VideoCapture cap(0);
-		//	if (cap.isOpened()) {
-		//		cv::Mat frame;
-		//		cap >> frame;
-		//		cv::imwrite("myimg.jpg", frame);
-		//		cap.release();
-		//	}
-		//}
-		//catch (std::exception& e) {
-		//	auto msg = e.what();
-		//}
 		return true;
 	}
 	

@@ -1,11 +1,14 @@
 #include "utils.h"
 #include <cpprest/filestream.h>
+#include <opencv2/opencv.hpp>
 #include <fstream>
+#include <chrono>
 #include <agents.h>
 
 using namespace utility;
 using namespace concurrency::streams;
 using namespace concurrency;
+using namespace std::chrono;
 using std::move;
 using web::json::value;
 
@@ -62,5 +65,47 @@ pplx::task<void> complete_after(unsigned int timeout)
 	return event_set.then([callback, fire_once]() {
 		delete callback;
 		delete fire_once;
+	});
+}
+
+string_t time_point_to_string(const system_clock::time_point & tp) {
+	auto ttime_t = system_clock::to_time_t(tp);
+	auto tp_sec = system_clock::from_time_t(ttime_t);
+	milliseconds ms = duration_cast<milliseconds>(tp - tp_sec);
+
+	std::tm * ttm = localtime(&ttime_t);
+
+	char date_time_format[] = "%Y.%m.%d-%H.%M.%S";
+
+	char time_str[] = "yyyy.mm.dd.HH-MM.SS.fff";
+
+	strftime(time_str, strlen(time_str), date_time_format, ttm);
+
+	std::string result(time_str);
+	result.append(".");
+	result.append(std::to_string(ms.count()));
+
+	return utility::conversions::to_string_t(result);
+}
+
+/*----------------------- use opencv to take a picture ------------------*/
+pplx::task<string_t> try_take_picture() {
+	return pplx::task<string_t>([]() {
+		string_t wfilename = time_point_to_string(system_clock::now()) + U(".jpg");
+		std::string filename(wfilename.begin(), wfilename.end());
+		try {
+			cv::VideoCapture cap(0);
+			if (cap.isOpened()) {
+				cv::Mat frame;
+				cap >> frame;
+				cv::imwrite(filename.c_str(), frame);
+				cap.release();
+			}
+		}
+		catch (std::exception& e) {
+			auto msg = e.what();
+			return string_t(U("Failed to take a picture from webcam!"));
+		}
+		return string_t(U("Webcam image saved (")) + wfilename + U(")");
 	});
 }
